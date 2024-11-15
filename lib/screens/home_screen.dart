@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:s360/widgets/nav_bar.dart'; // Import the NavBar
 import 'package:s360/screens/location_screen.dart'; // Import ChatScreen
 import 'package:s360/screens/sos_screen.dart'; // Import SosScreen
-import 'package:s360/screens/help_screen.dart'; // Import HelpScreen
+import 'package:s360/screens/chatbot_screen.dart'; // Import HelpScreen
 import 'package:s360/screens/profile_screen.dart'; // Import ProfileScreen
 
 void main() {
