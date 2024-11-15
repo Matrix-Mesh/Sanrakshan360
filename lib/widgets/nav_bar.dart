@@ -35,23 +35,23 @@ class _NavBarState extends State<NavBar> {
                   text: "Home",
                   icon: Icons.home,
                   selected: selectedIndex == 0,
-                  onPressed: () => _onItemTapped(0),
-                ),
-                IconBottomBar(
-                  text: "Chat",
-                  icon: Icons.chat_outlined,
-                  selected: selectedIndex == 1,
-                  onPressed: () => _onItemTapped(1),
+                  onPressed: () => _onItemTapped(0), // This works first than the above line
                 ),
                 IconBottomBar(
                   text: "SOS",
                   icon: Icons.sos_rounded,
+                  selected: selectedIndex == 1,
+                  onPressed: () => _onItemTapped(1),
+                ),
+                IconBottomBar(
+                  text: "Spot",
+                  icon: Icons.location_pin,
                   selected: selectedIndex == 2,
                   onPressed: () => _onItemTapped(2),
                 ),
                 IconBottomBar(
-                  text: "Help",
-                  icon: Icons.support,
+                  text: "Ask",
+                  icon: Icons.assistant,
                   selected: selectedIndex == 3,
                   onPressed: () => _onItemTapped(3),
                 ),

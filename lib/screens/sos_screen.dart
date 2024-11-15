@@ -5,10 +5,17 @@ class SosScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'SOS Screen Content',
-        style: TextStyle(fontSize: 24),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("SOS"),
+        backgroundColor: Color(0xff6D28D9),
+        centerTitle: true,
+      ),
+      body: const Center(
+        child:  Text(
+          "This is the SOS Screen",
+          style: TextStyle(fontSize: 24),
+        ),
       ),
     );
   }

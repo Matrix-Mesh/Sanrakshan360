@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:s360/widgets/nav_bar.dart'; // Import the NavBar
-import 'package:s360/screens/chat_screen.dart'; // Import ChatScreen
+import 'package:s360/screens/location_screen.dart'; // Import ChatScreen
 import 'package:s360/screens/sos_screen.dart'; // Import SosScreen
 import 'package:s360/screens/help_screen.dart'; // Import HelpScreen
 import 'package:s360/screens/profile_screen.dart'; // Import ProfileScreen
@@ -38,52 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Update AppBar based on selected tab
-  AppBar _getAppBar() {
-    switch (_selectedIndex) {
-      case 0:
-        return AppBar(
-          title: const Text('Home'),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4338CA),
-        );
-      case 1:
-        return AppBar(
-          title: const Text('Chat'),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4338CA),
-        );
-      case 2:
-        return AppBar(
-          title: const Text('SOS'),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4338CA),
-        );
-      case 3:
-        return AppBar(
-          title: const Text('Help'),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4338CA),
-        );
-      case 4:
-        return AppBar(
-          title: const Text('Profile'),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4338CA),
-        );
-      default:
-        return AppBar(
-          title: const Text('Women Safety App'),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4338CA),
-        );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _getAppBar(), // Use dynamic AppBar
       body: _getPage(_selectedIndex), // Display the selected page
       bottomNavigationBar:
           NavBar(onItemSelected: _onNavItemSelected), // Pass the callback
@@ -96,11 +53,11 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return const HomeContent(); // Home page content (not HomeScreen itself)
       case 1:
-        return const ChatScreen(); // Chat page
+        return const SosScreen(); // Chat page
       case 2:
-        return const SosScreen(); // SOS page
+        return const LocationScreen(); // SOS page
       case 3:
-        return const HelpScreen(); // Help page
+        return const ChatBotScreen(); // Help page
       case 4:
         return const ProfileScreen(); // Profile page
       default:
@@ -115,10 +72,17 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Home Screen Content',
-        style: TextStyle(fontSize: 24),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Home Screen"),
+        backgroundColor: Color(0xff6D28D9),
+        centerTitle: true,
+      ),
+      body:const Center(
+        child: Text(
+          "Home Tab",
+          style: TextStyle(fontSize: 24),
+        ),
       ),
     );
   }
