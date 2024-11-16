@@ -8,7 +8,7 @@ class LocationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Live Location"),
-        backgroundColor: Color(0xff6D28D9),
+        backgroundColor: Colors.pinkAccent,
         centerTitle: true,
       ),
       body:const Center(

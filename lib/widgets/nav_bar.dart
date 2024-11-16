@@ -16,7 +16,7 @@ class _NavBarState extends State<NavBar> {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Color(0xff4338CA), Color(0xff6D28D9)],
+          colors: [Colors.pink,Colors.pinkAccent],
         ),
       ),
       child: BottomAppBar(
@@ -104,7 +104,7 @@ class IconBottomBar extends StatelessWidget {
           icon: Icon(
             icon,
             size: 30,
-            color: selected ? accentColor : Colors.grey,
+            color: selected ? accentColor : Colors.white70,
           ),
         ),
         Text(
@@ -112,7 +112,7 @@ class IconBottomBar extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             height: .1,
-            color: selected ? accentColor : Colors.grey,
+            color: selected ? accentColor : Colors.white70,
           ),
         ),
       ],

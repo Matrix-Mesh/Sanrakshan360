@@ -8,11 +8,11 @@ class SosScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("SOS"),
-        backgroundColor: Color(0xff6D28D9),
+        backgroundColor: Colors.pinkAccent,
         centerTitle: true,
       ),
       body: const Center(
-        child:  Text(
+        child: Text(
           "This is the SOS Screen",
           style: TextStyle(fontSize: 24),
         ),
