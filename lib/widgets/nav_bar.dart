@@ -26,7 +26,7 @@ class _NavBarState extends State<NavBar> {
           height: 56,
           width: MediaQuery.of(context).size.width,
           child: Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +103,7 @@ class IconBottomBar extends StatelessWidget {
           onPressed: onPressed,
           icon: Icon(
             icon,
-            size: 35,
+            size: 30,
             color: selected ? accentColor : Colors.grey,
           ),
         ),
