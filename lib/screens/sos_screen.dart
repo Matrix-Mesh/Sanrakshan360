@@ -54,7 +54,7 @@ class SosScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'Press for Emergency',
+              'Press for Help',
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.grey,
@@ -63,7 +63,6 @@ class SosScreen extends StatelessWidget {
           ],
         ),
       ),
-
     );
   }
 }
