@@ -76,7 +76,7 @@ class HomeContent extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Hi , UserName',
+          'Hi , Pranjal',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,

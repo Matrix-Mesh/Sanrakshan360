@@ -12,7 +12,7 @@ class ApiServices {
       },);
 
       Map jsonResponse = jsonDecode(response.body);
-      print("jsonResponse $jsonResponse")
+      print("jsonResponse $jsonResponse");
 
     } catch(err){
       print("error $err");

@@ -55,7 +55,7 @@ class WomanEmergency extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Helpline for Women in distress',
+                          'For Women in distress',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: MediaQuery.of(context).size.width * 0.045,
