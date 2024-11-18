@@ -5,6 +5,7 @@ import 'package:s360/screens/sos_screen.dart'; // Import SosScreen
 import 'package:s360/screens/location_screen.dart'; // Import LocationScreen
 import 'package:s360/screens/chatbot_screen.dart'; // Import HelpScreen
 import 'package:s360/screens/profile_screen.dart'; // Import ProfileScreen
+import 'package:s360/screens/notification_screen.dart'; //import 
 
 void main() {
   runApp(const MyApp());
@@ -83,7 +84,12 @@ class HomeContent extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NotificationScreen()),
+              );
+            },
           ),
         ],
       ),

@@ -55,31 +55,13 @@ class AmbulanceEmergency extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'In medical emergency , call',
+                          'Call 102',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: MediaQuery.of(context).size.width * 0.045,
                           ),
-                        ),
-                        Container(
-                          height: 30,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '1-0-2',
-                              style: TextStyle(
-                                color: Colors.red[300],
-                                fontWeight: FontWeight.bold,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.055,
-                              ),
-                            ),
-                          ),
-                        ),
+                        )
+                        
                       ],
                     ),
                   )
