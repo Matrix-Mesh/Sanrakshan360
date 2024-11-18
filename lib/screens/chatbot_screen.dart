@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:s360/widgets/chat_widget.dart';
+import 'package:s360/widgets/text_widget.dart';
+import '../constants/constants.dart';
 
 class ChatBotScreen extends StatefulWidget {
   const ChatBotScreen({super.key});
@@ -31,19 +34,40 @@ class _ChatScreenState extends State<ChatBotScreen> {
         elevation: 2,
 
         leading: Padding(
+
           padding: const EdgeInsets.all(8.0),
           child: Icon(Icons.location_city),
           ),
 
           title: const Text("Chatbot"),
-          actions: [IconButton(onPressed: (){}, icon: Icon(Icons.menu))],
+          actions: [IconButton(onPressed: ()async{
+            await showModalBottomSheet(backgroundColor: scaffoldBackgroundColor, context: context, builder: (context){
+              return Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Row(
+                  children: const [
+                    Flexible(
+                      child: TextWidget(
+                      label: "How's it",
+                      fontSize: 16,)
+                )
+                ],)
+              );
+            });
+            },
+           icon: Icon(Icons.menu))],
         ),
+
       body: SafeArea(child: Column(children: [
+
         Flexible(
           child:ListView.builder(
             itemCount: 6,
             itemBuilder: (context, index){
-              return const Text("data will be shown here");
+              return ChatWidget(
+                msg: chatMessages[index]["msg"].toString(),
+                chatIndex: int.parse(chatMessages[index]["chatIndex"].toString()),
+              );
             }),
         ),
         if(_isTyping) ...[
