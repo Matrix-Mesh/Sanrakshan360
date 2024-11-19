@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import url launcher
+import 'package:fluttertoast/fluttertoast.dart'; //Import flutter toast
 import 'package:s360/widgets/home_widgets/emergency.dart'; // Import Emergency widget
 import 'package:s360/widgets/home_widgets/service_cards/bus_service_card.dart';
 import 'package:s360/widgets/home_widgets/service_cards/hospital_service_card.dart'; // Import HospitalServiceCard
@@ -8,6 +10,17 @@ import 'package:s360/widgets/home_widgets/service_cards/police_service_card.dart
 
 class HomeBodyContent extends StatelessWidget {
   const HomeBodyContent({Key? key}) : super(key: key);
+
+  static Future<void> openMap(String location) async {
+    String googleUrl = "https://www.google.com/maps/search/$location";
+    final Uri _url = Uri.parse(googleUrl);
+
+    try {
+      await launchUrl(_url);
+    } catch (e) {
+      Fluttertoast.showToast(msg: "something wen wrong!");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +65,11 @@ class HomeBodyContent extends StatelessWidget {
               crossAxisSpacing: 16,
               padding: const EdgeInsets.all(8),
               children: const [
-                PoliceServiceCard(),
-                HospitalServiceCard(),
-                BusServiceCard(),
-                PharmacyServiceCard(),
-                MetroServiceCard()
+                PoliceServiceCard(onMapFunction: openMap),
+                HospitalServiceCard(onMapFunction: openMap),
+                BusServiceCard(onMapFunction: openMap),
+                PharmacyServiceCard(onMapFunction: openMap),
+                MetroServiceCard(onMapFunction: openMap)
               ],
             ),
           ),
