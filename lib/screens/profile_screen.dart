@@ -126,21 +126,22 @@ class ProfileScreen extends StatelessWidget {
     return Column(
       children: [
         _buildMenuItem(
+          icon: Icons.verified_user_rounded,
+          title: 'User Details',
+          onTap: () {},
+        ),
+        _buildMenuItem(
           icon: Icons.settings,
           title: 'Settings',
-          onTap: () {},
+          onTap: () {
+            
+          },
         ),
         _buildMenuItem(
           icon: Icons.notifications,
           title: 'Notifications',
           onTap: () {},
         ),
-        _buildMenuItem(
-          icon: Icons.verified_user_rounded,
-          title: 'User Details',
-          onTap: () {},
-        ),
-        
         _buildMenuItem(
           icon: Icons.logout,
           title: 'Logout',
