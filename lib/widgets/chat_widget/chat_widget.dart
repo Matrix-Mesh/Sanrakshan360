@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'text_widget.dart';
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
 
 class ChatWidget extends StatelessWidget {
   const ChatWidget({super.key, required this.msg, required this.chatIndex});

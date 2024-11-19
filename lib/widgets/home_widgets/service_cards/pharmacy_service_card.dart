@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MetroServiceCard extends StatelessWidget {
-  const MetroServiceCard({Key? key}) : super(key: key);
+class PharmacyServiceCard extends StatelessWidget {
+  final Function? onMapFunction;
+
+  const PharmacyServiceCard({Key? key, this.onMapFunction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _buildServiceCard(
-      title: 'Metro Stations',
-      icon: 'assets/metro-station.png',
+      title: 'Pharmacies',
+      icon: 'assets/pharmacy.png',
       startColor: Color(0xFFFD8080),
       endColor: Color(0xFFFB8580),
     );
@@ -26,7 +28,7 @@ class MetroServiceCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          // Add navigation to maps/location functionality here
+          onMapFunction!("pharmacies near me");
         },
         borderRadius: BorderRadius.circular(16),
         child: Container(

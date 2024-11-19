@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class PoliceServiceCard extends StatelessWidget {
-  const PoliceServiceCard({Key? key}) : super(key: key);
+class HospitalServiceCard extends StatelessWidget {
+  final Function? onMapFunction;
+
+  const HospitalServiceCard({Key? key ,this.onMapFunction}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _buildServiceCard(
-      title: 'Police Stations',
-      icon: 'assets/police-station.png',
+      title: 'Hospitals',
+      icon: 'assets/hospital.png',
       startColor: Color(0xFFFD8080),
       endColor: Color(0xFFFB8580),
     );
@@ -26,7 +28,7 @@ class PoliceServiceCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          // Add navigation to maps/location functionality here
+          onMapFunction!("hospitals near me");
         },
         borderRadius: BorderRadius.circular(16),
         child: Container(

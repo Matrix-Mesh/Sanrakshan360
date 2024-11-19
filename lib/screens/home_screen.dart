@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:s360/widgets/home_body_content.dart'; // Import the new HomeBodyContent widget
+import 'package:s360/widgets/home_widgets/service_card_content.dart'; // Import the new HomeBodyContent widget
 import 'package:s360/widgets/nav_bar.dart'; // Import the NavBar
 import 'package:s360/screens/sos_screen.dart'; // Import SosScreen
 import 'package:s360/screens/location_screen.dart'; // Import LocationScreen

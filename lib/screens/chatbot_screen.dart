@@ -32,6 +32,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final ScrollController _scrollController = ScrollController();
   
   String _apiKey = 'AIzaSyCMVDKwfRD9Y40tC_Qv6tCm-Qo2OAPIG7M';
+  // ignore: unused_field
   bool _isLoading = false;
 
   @override
