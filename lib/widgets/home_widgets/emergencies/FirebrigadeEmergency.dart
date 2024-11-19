@@ -54,14 +54,23 @@ class FirebrigadeEmergency extends StatelessWidget {
                             fontSize: MediaQuery.of(context).size.width * 0.06,
                           ),
                         ),
-                        Text(
-                          'Call 101',
-                          style: TextStyle(
+                        Container(
+                          height: 30,
+                          width: 80,
+                          decoration: BoxDecoration(
                             color: Colors.white,
-                            fontSize: MediaQuery.of(context).size.width * 0.045,
+                            borderRadius: BorderRadius.circular(20),
                           ),
+                          child: Center(
+                              child: Text('Call 101',
+                                  style: TextStyle(
+                                    color: Colors.red[300],
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                            0.055,
+                                  ))),
                         )
-                        
                       ],
                     ),
                   )

@@ -28,7 +28,7 @@ class MetroServiceCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          onMapFunction!("police stations near me");
+          onMapFunction!("metro stations near me");
         },
         borderRadius: BorderRadius.circular(16),
         child: Container(

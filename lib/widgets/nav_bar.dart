@@ -13,109 +13,121 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
+    // Theme colors extracted from typical safety app palette
+    final Color primaryColor = Color(0xFFFF3366); // Vibrant pink-red
+    final Color secondaryColor = Color(0xFF5D3FD3); // Deep purple
+    final Color backgroundColor = Color(0xFFF5F5F5); // Soft light gray
+
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.pink,Colors.pinkAccent],
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: Offset(0, -3),
+          )
+        ],
       ),
-      child: BottomAppBar(
-        elevation: 0,
-        color: Colors.transparent,
-        child: SizedBox(
-          height: 56,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconBottomBar(
-                  text: "Home",
-                  icon: Icons.home,
-                  selected: selectedIndex == 0,
-                  onPressed: () => _onItemTapped(0), // This works first than the above line
-                ),
-                IconBottomBar(
-                  text: "SOS",
-                  icon: Icons.sos_rounded,
-                  selected: selectedIndex == 1,
-                  onPressed: () => _onItemTapped(1),
-                ),
-                IconBottomBar(
-                  text: "Spot",
-                  icon: Icons.location_pin,
-                  selected: selectedIndex == 2,
-                  onPressed: () => _onItemTapped(2),
-                ),
-                IconBottomBar(
-                  text: "Ask",
-                  icon: Icons.assistant,
-                  selected: selectedIndex == 3,
-                  onPressed: () => _onItemTapped(3),
-                ),
-                IconBottomBar(
-                  text: "Profile",
-                  icon: Icons.person,
-                  selected: selectedIndex == 4,
-                  onPressed: () => _onItemTapped(4),
-                ),
-              ],
-            ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildNavItem(
+                index: 0,
+                icon: Icons.home_rounded,
+                label: "Home",
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+              ),
+              _buildNavItem(
+                index: 1,
+                icon: Icons.emergency_rounded,
+                label: "SOS",
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+              ),
+              _buildNavItem(
+                index: 2,
+                icon: Icons.location_on_rounded,
+                label: "Spot",
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+              ),
+              _buildNavItem(
+                index: 3,
+                icon: Icons.help_outline_rounded,
+                label: "Ask",
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+              ),
+              _buildNavItem(
+                index: 4,
+                icon: Icons.person_rounded,
+                label: "Profile",
+                primaryColor: primaryColor,
+                secondaryColor: secondaryColor,
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-    widget.onItemSelected(index);
-  }
-}
-
-class IconBottomBar extends StatelessWidget {
-  const IconBottomBar(
-      {Key? key,
-      required this.text,
-      required this.icon,
-      required this.selected,
-      required this.onPressed})
-      : super(key: key);
-
-  final String text;
-  final IconData icon;
-  final bool selected;
-  final Function() onPressed;
-
-  final Color primaryColor = const Color(0xff4338CA);
-  final Color accentColor = const Color(0xffffffff);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          onPressed: onPressed,
-          icon: Icon(
-            icon,
-            size: 30,
-            color: selected ? accentColor : Colors.white70,
-          ),
+  Widget _buildNavItem({
+    required int index,
+    required IconData icon,
+    required String label,
+    required Color primaryColor,
+    required Color secondaryColor,
+  }) {
+    bool isSelected = selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+        });
+        widget.onItemSelected(index);
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        padding: EdgeInsets.symmetric(
+          horizontal: isSelected ? 16.0 : 8.0,
+          vertical: 8.0,
         ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 12,
-            height: .1,
-            color: selected ? accentColor : Colors.white70,
-          ),
+        decoration: BoxDecoration(
+          color:
+              isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
         ),
-      ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 28,
+              color: isSelected ? primaryColor : Colors.grey.shade600,
+            ),
+            SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? primaryColor : Colors.grey.shade600,
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
