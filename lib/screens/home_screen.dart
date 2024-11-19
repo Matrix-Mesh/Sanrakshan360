@@ -55,11 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return const HomeContent(); // Home page content (not HomeScreen itself)
       case 1:
-        return const SosScreen(); // Chat page
+        return SOSApp(); // Chat page
       case 2:
         return const LocationScreen(); // SOS page
       case 3:
-        return const ChatBotScreen(); // Help page
+        return const ChatbotScreen(); // Help page
       case 4:
         return const ProfileScreen(); // Profile page
       default:
