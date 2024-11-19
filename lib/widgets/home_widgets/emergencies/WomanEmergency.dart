@@ -62,14 +62,15 @@ class WomanEmergency extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
-                              child: Text('Call 181',
-                                  style: TextStyle(
-                                    color: Colors.red[300],
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                            0.055,
-                                  ))),
+                              child: Text(
+                              'Call 181',
+                              style: TextStyle(
+                                color: Colors.red[300],
+                                fontWeight: FontWeight.bold,
+                                fontSize: MediaQuery.of(context).size.width *
+                                    0.045, // Smaller size
+                              ),
+                            ),),
                         )
                       ],
                     ),
