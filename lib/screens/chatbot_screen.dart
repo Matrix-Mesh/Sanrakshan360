@@ -44,13 +44,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   Future<void> _loadApiKey() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _apiKey = prefs.getString('openai_api_key') ?? '';
+      _apiKey = prefs.getString('gemini_api_key') ?? '';
     });
   }
 
   Future<void> _saveApiKey(String apiKey) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('openai_api_key', apiKey);
+    await prefs.setString('gemini_api_key', apiKey);
     setState(() {
       _apiKey = apiKey;
     });
@@ -81,7 +81,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     _scrollToBottom();
 
     try {
-      final response = await _callGptApi(messageText);
+      final response = await _callGeminiApi(messageText);
       setState(() {
         _messages.removeLast(); // Remove loading indicator
         _messages.add(ChatMessage(
@@ -104,26 +104,32 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     _scrollToBottom();
   }
 
-  Future<String> _callGptApi(String message) async {
+  Future<String> _callGeminiApi(String message) async {
     final response = await http.post(
-      Uri.parse('https://api.openai.com/v1/chat/completions'),
+      Uri.parse('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$_apiKey'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $_apiKey',
       },
       body: jsonEncode({
-        'model': 'gpt-3.5-turbo',
-        'messages': [
-          {'role': 'system', 'content': 'You are a helpful assistant.'},
-          {'role': 'user', 'content': message}
+        'contents': [
+          {
+            'parts': [
+              {
+                'text': message
+              }
+            ]
+          }
         ],
-        'max_tokens': 150,
+        'generationConfig': {
+          'temperature': 0.7,
+          'maxOutputTokens': 800,
+        },
       }),
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      return data['choices'][0]['message']['content'].trim();
+      return data['candidates'][0]['content']['parts'][0]['text'] ?? 'No response generated';
     } else {
       throw Exception('Failed to load response: ${response.body}');
     }
@@ -135,16 +141,30 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'Enter OpenAI API Key', 
+          'Enter Gemini API Key', 
           style: GoogleFonts.poppins(),
         ),
-        content: TextField(
-          controller: _apiKeyController,
-          decoration: InputDecoration(
-            hintText: 'Paste your OpenAI API key',
-            hintStyle: GoogleFonts.inter(color: Colors.grey),
-          ),
-          obscureText: true,
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: _apiKeyController,
+              decoration: InputDecoration(
+                hintText: 'Paste your Gemini API key',
+                hintStyle: GoogleFonts.inter(color: Colors.grey),
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Get your API key from Google AI Studio',
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
         ),
         actions: [
           TextButton(
@@ -162,11 +182,13 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
     });
   }
 
@@ -175,7 +197,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'AI Chat Assistant', 
+          'Chat Assistant', 
           style: GoogleFonts.poppins(
             fontWeight: FontWeight.w600,
             color: Colors.black87
