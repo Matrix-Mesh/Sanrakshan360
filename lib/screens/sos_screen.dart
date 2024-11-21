@@ -16,13 +16,15 @@ class SOSApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: const SOSHomePage(),
+      home: const SOSHomePage(emergencyContacts: [],),
     );
   }
 }
 
 class SOSHomePage extends StatefulWidget {
-  const SOSHomePage({Key? key}) : super(key: key);
+  final List<Map<String, String>> emergencyContacts;
+
+  const SOSHomePage({Key? key,required this.emergencyContacts}) : super(key: key);
 
   @override
   _SOSHomePageState createState() => _SOSHomePageState();

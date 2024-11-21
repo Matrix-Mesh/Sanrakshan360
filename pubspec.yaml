@@ -47,6 +47,10 @@ dependencies:
   google_fonts: ^4.0.3
   latlong2: ^0.8.0
   flutter_map: ^4.0.0
+  email_validator: ^2.1.17
+  flutter_svg: ^2.0.9
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.3
 
 dev_dependencies:
   flutter_test:

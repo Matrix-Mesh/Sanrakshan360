@@ -1,7 +1,40 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:s360/screens/login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final String userName;
+  final String userEmail;
+
+  const ProfileScreen({
+    super.key,
+    required this.userName,
+    required this.userEmail,
+  });
+
+  // Function to handle logout
+  Future<void> _logout(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut(); // Sign out the user
+
+      // After signing out, navigate to the login screen
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Logged out successfully")),
+      );
+
+      // This will redirect to the login screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                LoginScreen()), // Navigate directly to LoginScreen
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error logging out: $e")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +52,16 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Pranjal Pant',
-            style: TextStyle(
+          Text(
+            userName, // Use dynamic userName
+            style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Text(
-            'pranjalipu123@gmail.com',
-            style: TextStyle(
+          Text(
+            userEmail, // Use dynamic userEmail
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 16,
             ),
@@ -40,17 +73,17 @@ class ProfileScreen extends StatelessWidget {
               _buildStatCard(
                 icon: Icons.contact_emergency,
                 label: 'Contacts',
-                value: '7',
+                value: '2',
               ),
               _buildStatCard(
                 icon: Icons.location_on,
                 label: 'Locations',
-                value: '8',
+                value: '0',
               ),
             ],
           ),
           const SizedBox(height: 28),
-          _buildMenuSection(),
+          _buildMenuSection(context), // Pass context to the menu section
         ],
       ),
     );
@@ -122,30 +155,13 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuSection() {
+  Widget _buildMenuSection(BuildContext context) {
     return Column(
       children: [
         _buildMenuItem(
-          icon: Icons.verified_user_rounded,
-          title: 'User Details',
-          onTap: () {},
-        ),
-        _buildMenuItem(
-          icon: Icons.settings,
-          title: 'Settings',
-          onTap: () {
-            
-          },
-        ),
-        _buildMenuItem(
-          icon: Icons.notifications,
-          title: 'Notifications',
-          onTap: () {},
-        ),
-        _buildMenuItem(
           icon: Icons.logout,
           title: 'Logout',
-          onTap: () {},
+          onTap: () => _logout(context), // Call logout method
           isDestructive: true,
         ),
       ],

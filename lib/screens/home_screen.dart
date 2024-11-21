@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:s360/widgets/home_widgets/service_card_content.dart'; // Import the new HomeBodyContent widget
 import 'package:s360/widgets/nav_bar.dart'; // Import the NavBar
 import 'package:s360/screens/sos_screen.dart'; // Import SosScreen
 import 'package:s360/screens/location_screen.dart'; // Import LocationScreen
 import 'package:s360/screens/chatbot_screen.dart'; // Import HelpScreen
 import 'package:s360/screens/profile_screen.dart'; // Import ProfileScreen
-import 'package:s360/screens/notification_screen.dart'; //import 
+import 'package:s360/screens/login_screen.dart'; // Import LoginScreen
 
 void main() {
   runApp(const MyApp());
@@ -16,15 +17,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(), // HomeScreen is the main widget
+      home: FirebaseAuth.instance.currentUser != null
+          ? HomeScreen(
+              userName:
+                  FirebaseAuth.instance.currentUser!.displayName ?? 'User',
+              userEmail: '',
+            )
+          : LoginScreen(), // If user is logged in, show HomeScreen else show LoginScreen
     );
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final String userName;
+  final String userEmail;
+
+  const HomeScreen({Key? key, required this.userName, required this.userEmail})
+      : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -53,47 +64,50 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return const HomeContent(); // Home page content (not HomeScreen itself)
+        return HomeContent(
+            userName: widget.userName); // Pass userName to HomeContent
       case 1:
-        return SOSApp(); // Chat page
+        return const SOSApp(); // SOS page
       case 2:
-        return const LocationScreen(); // SOS page
+        return const LocationScreen(); // Location page
       case 3:
-        return const ChatbotScreen(); // Help page
+        return const ChatbotScreen(); // Chatbot page
       case 4:
-        return const ProfileScreen(); // Profile page
+        return ProfileScreen(
+            userName: widget.userName,
+            userEmail: widget.userEmail); // Profile page
       default:
-        return const HomeContent(); // Default to Home content
+        return HomeContent(
+            userName: widget.userName); // Default to Home content
     }
   }
 }
 
-// A simple HomeContent widget for the Home tab content
+// HomeContent widget to display the userName on the home screen
 class HomeContent extends StatelessWidget {
-  const HomeContent({Key? key}) : super(key: key);
+  final String userName;
+
+  const HomeContent({Key? key, required this.userName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Hi , Pranjal',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        elevation: 0,
+        title: Text('Hi, ${userName.isEmpty ? 'User' : userName}'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {
-              Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => NotificationScreen()),
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
               );
             },
           ),
         ],
       ),
-      body: const HomeBodyContent(), // Use the new HomeBodyContent widget
+      body: const HomeBodyContent(), // Replace with your widget content
     );
   }
 }
