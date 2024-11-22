@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:google_sign_in/google_sign_in.dart'; // Import Google Sign-In
 import 'package:s360/screens/home_screen.dart'; // Import the HomeScreen
+import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,11 +14,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false; // To show loading indicator
   bool _isPasswordVisible = false; // To toggle password visibility
   final _formKey = GlobalKey<FormState>();
-  
+
   // Controllers for text inputs
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void dispose() {
@@ -30,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // Toggle between login and sign-up mode
   void _toggleAuthMode() {
     setState(() {
-      _isLogin = !_isLogin;  // Toggle between login and sign-up mode
+      _isLogin = !_isLogin; // Toggle between login and sign-up mode
     });
   }
 
@@ -46,7 +50,8 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       if (_isLogin) {
         // Login logic
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
@@ -54,14 +59,16 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => HomeScreen(
-              userName: userCredential.user!.displayName ?? userCredential.user!.email!,
+              userName: userCredential.user!.displayName ??
+                  userCredential.user!.email!,
               userEmail: userCredential.user!.email!, // Pass email
             ),
           ),
         );
       } else {
         // SignUp logic
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
@@ -109,6 +116,50 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = false; // Hide loading indicator
       });
+    }
+  }
+
+  Future<void> _googleLogin() async {
+    try {
+      // Ensure the user is always prompted to choose an account
+      await _googleSignIn.signOut(); // Sign out the current user if any
+
+      // Start the Google sign-in process
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        // User canceled the sign-in
+        return;
+      }
+
+      // Obtain Google authentication details
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create a new credential using the obtained authentication details
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in with the Google credential
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Redirect to HomeScreen with user info
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(
+            userName: userCredential.user!.displayName ??
+                googleUser.displayName ??
+                "User",
+            userEmail: userCredential.user!.email!,
+          ),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      print('Google sign-in failed: ${e.code}');
+      _showErrorDialog('Google sign-in failed. Please try again.');
     }
   }
 
@@ -169,12 +220,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: () => setState(() => _isLogin = true),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: _isLogin
-                                ? Colors.pink[600]
-                                : Colors.pink[100],
-                            foregroundColor: _isLogin
-                                ? Colors.white
-                                : Colors.pink[700],
+                            backgroundColor:
+                                _isLogin ? Colors.pink[600] : Colors.pink[100],
+                            foregroundColor:
+                                _isLogin ? Colors.white : Colors.pink[700],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -187,12 +236,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: () => setState(() => _isLogin = false),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: !_isLogin
-                                ? Colors.pink[600]
-                                : Colors.pink[100],
-                            foregroundColor: !_isLogin
-                                ? Colors.white
-                                : Colors.pink[700],
+                            backgroundColor:
+                                !_isLogin ? Colors.pink[600] : Colors.pink[100],
+                            foregroundColor:
+                                !_isLogin ? Colors.white : Colors.pink[700],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -215,13 +262,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                              color: Colors.pink[600]!, width: 2),
+                          borderSide:
+                              BorderSide(color: Colors.pink[600]!, width: 2),
                         ),
                       ),
-                      validator: (value) => value!.isEmpty
-                          ? 'Please enter your full name'
-                          : null,
+                      validator: (value) =>
+                          value!.isEmpty ? 'Please enter your full name' : null,
                     ),
                   if (!_isLogin) const SizedBox(height: 15),
                   TextFormField(
@@ -235,8 +281,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                            color: Colors.pink[600]!, width: 2),
+                        borderSide:
+                            BorderSide(color: Colors.pink[600]!, width: 2),
                       ),
                     ),
                     validator: (value) {
@@ -254,7 +300,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 15),
                   TextFormField(
                     controller: _passwordController,
-                    obscureText: !_isPasswordVisible,  // Toggle password visibility
+                    obscureText:
+                        !_isPasswordVisible, // Toggle password visibility
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.lock, color: Colors.pink[600]),
                       hintText: 'Password',
@@ -264,8 +311,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                            color: Colors.pink[600]!, width: 2),
+                        borderSide:
+                            BorderSide(color: Colors.pink[600]!, width: 2),
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -316,6 +363,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: Colors.pink[600]),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  SignInButton(
+                    Buttons.google,
+                    text: "Sign in with Google",
+                    onPressed: _googleLogin,
+                  )
                 ],
               ),
             ),
